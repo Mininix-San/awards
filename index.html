@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DAOSHI AWARDS</title>
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/1lLnjQ3NYt6Bd6WapJ2p0EjzfQJIbB-es">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 105, 180, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(135, 206, 235, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 50% 50%, rgba(218, 112, 214, 0.2) 0%, transparent 70%),
+                linear-gradient(135deg, #ff9ed2 0%, #ffd1a9 25%, #b3e5fc 50%, #e1bee7 75%, #ffb3d9 100%);
+            background-size: 100% 100%, 100% 100%, 100% 100%, 400% 400%;
+            animation: gradientShift 20s ease infinite;
+            color: #fff;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        .star {
+            position: absolute;
+            font-size: 20px;
+            animation: float 3s ease-in-out infinite;
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff;
+            opacity: 0.6;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 2;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            animation: slideDown 1s ease-out;
+        }
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3em;
+            color: #ffff00;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: #ff69b4;
+            border: 8px solid #fff;
+            padding: 25px 40px;
+            display: inline-block;
+            box-shadow:
+                0 0 0 10px #ff1493,
+                0 0 0 14px #fff,
+                8px 8px 0 14px rgba(0,0,0,0.3);
+            image-rendering: pixelated;
+            -webkit-font-smoothing: none;
+            text-shadow:
+                2px 2px 0 #ff1493,
+                4px 4px 0 #000;
+            transform: rotate(-2deg);
+            position: relative;
+            
+        }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 24%, 55% { opacity: 0.6; }
+        }
+        .subtitle {
+            font-size: 1.5em;
+            color: #fff;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            margin-top: 70px;
+        }
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 5px solid;
+            animation: cardAppear 0.6s ease-out backwards;
+            position: relative;
+            overflow: hidden;
+        }
+        .card:nth-child(1) { border-color: #ff69b4; animation-delay: 0.2s; }
+        .card:nth-child(2) { border-color: #87ceeb; animation-delay: 0.4s; }
+        .card:nth-child(3) { border-color: #da70d6; animation-delay: 0.6s; }
+        @keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.8) rotate(-5deg); }
+            to { opacity: 1; transform: scale(1) rotate(0deg); }
+        }
+        .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 15px 40px rgba(0,0,0,0.4); }
+        .card h2 {
+            color: #ff1493;
+            font-size: 2em;
+            margin-bottom: 20px;
+            text-align: center;
+            text-shadow: 2px 2px 0 #00ffff;
+        }
+        .card-content { color: #333; font-size: 1.1em; line-height: 1.6; text-align: center; }
+        .discord-section { text-align: center; margin: 60px 0; }
+        .discord-button {
+            display: inline-block;
+            background: linear-gradient(135deg, #7289da 0%, #5865f2 100%);
+            color: white;
+            padding: 20px 50px;
+            font-size: 1.5em;
+            text-decoration: none;
+            border-radius: 50px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+            animation: pulse 2s ease infinite;
+            font-weight: bold;
+        }
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 10px 30px rgba(0,0,0,0.3), 0 0 0 0 rgba(255,255,255,0.7); }
+            50% { box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 0 15px rgba(255,255,255,0); }
+        }
+        .discord-button:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        .star-butterfly {
+            position: fixed;
+            bottom: 20px;
+            right: 40px;
+            width: 350px;
+            height: auto;
+            z-index: 1000;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+        }
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5em; letter-spacing: 6px; padding: 15px 25px; }
+            .cards-container { grid-template-columns: 1fr; }
+            .star-butterfly { width: 100px; bottom: 10px; right: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <img src="star.gif" alt="Star Butterfly" class="star-butterfly">
+    <div class="container">
+        <header>
+            <h1>DAOSHI AWARDS</h1>
+            <p class="subtitle">O Maior Evento de Todos os Tempos!</p>
+        </header>
+        <div class="cards-container">
+            <div class="card">
+                <h2>Português</h2>
+                <div class="card-content">
+                    <p>Bem-vindos ao DAOSHI AWARDS! O evento mais incrível e mágico do universo! Aqui celebramos o melhor da criatividade, diversão e amizade! Prepare sua varinha e junte-se a nós nessa aventura extraordinária!</p>
+                </div>
+            </div>
+            <div class="card">
+                <h2>English</h2>
+                <div class="card-content">
+                    <p>Welcome to DAOSHI AWARDS! The most incredible and magical event in the universe! Here we celebrate the best of creativity, fun and friendship! Grab your wand and join us on this extraordinary adventure!</p>
+                </div>
+            </div>
+            <div class="card">
+                <h2>Español</h2>
+                <div class="card-content">
+                    <p>¡Bienvenidos a DAOSHI AWARDS! ¡El evento más increíble y mágico del universo! ¡Aquí celebramos lo mejor de la creatividad, diversión y amistad! ¡Prepara tu varita y únete a nosotros en esta extraordinaria aventura!</p>
+                </div>
+            </div>
+        </div>
+        <div class="discord-section">
+            <a href="#" class="discord-button" id="discordBtn">Entre no Discord!</a>
+        </div>
+    </div>
+</body>
+</html>
