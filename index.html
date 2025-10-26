@@ -171,7 +171,9 @@
 </head>
 <body>
     <div class="stars" id="stars"></div>
-    <img src="star.gif" alt="Star Butterfly" class="star-butterfly">
+    
+    <img src="star.gif" alt="Star Butterfly" class="star-butterfly" id="starButterflyGif">
+    
     <div class="container">
         <header>
             <h1>DAOSHI AWARDS</h1>
@@ -201,5 +203,57 @@
             <a href="#" class="discord-button" id="discordBtn">Entre no Discord!</a>
         </div>
     </div>
-</body>
-</html>
+
+  <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- CONFIGURAÇÃO ---
+            // !IMPORTANTE: Ajuste estes valores conforme a duração real dos seus GIFs
+            const DURACAO_UMA_VOLTA_STAR1_MS = 2000; // Duração de 1 loop do star.gif (ex: 2000ms = 2s)
+            const DURACAO_STAR2_MS = 2000; // Duração total do star2.gif (ex: 2000ms = 2s)
+            const TAMANHO_STAR2_PX = 592; // Tamanho (largura) do star2.gif em pixels
+            const POSICAO_STAR2_BOTTOM = 24; // Distância do fundo da tela em pixels
+            const POSICAO_STAR2_RIGHT = 47; // Distância da direita da tela em pixels
+            // --- FIM DA CONFIGURAÇÃO ---
+
+            const starImg = document.getElementById('starButterflyGif');
+            
+            if (starImg) {
+                function iniciarCiclo() {
+                    
+                    // --- ESTADO 1 (star.gif) ---
+                    // Remove os estilos inline para que o CSS da classe .star-butterfly
+                    // (e a media query) volte a funcionar.
+                    starImg.style.width = ''; 
+                    starImg.style.bottom = ''; 
+                    starImg.style.right = '';
+                    
+                    // AGORA define o src. O navegador vai carregar o GIF
+                    // no elemento que já está com o tamanho correto do CSS.
+                    starImg.src = 'star.gif?' + Date.now();
+                    
+                    // Após 10 voltas (ou 1, como no seu teste) do star.gif, troca para star2.gif
+                    setTimeout(() => {
+                        
+                        // --- ESTADO 2 (star2.gif) ---
+                        // Define os estilos inline do star2 PRIMEIRO.
+                        starImg.style.width = TAMANHO_STAR2_PX + 'px'; // Aplica tamanho do star2.gif
+                        starImg.style.bottom = POSICAO_STAR2_BOTTOM + 'px'; // Aplica posição do star2.gif
+                        starImg.style.right = POSICAO_STAR2_RIGHT + 'px';
+
+                        // AGORA define o src. O navegador vai carregar o GIF
+                        // no elemento que já está com o tamanho de 592px.
+                        starImg.src = 'star2.gif?' + Date.now();
+                        
+                        // Após star2.gif rodar 1x, reinicia o ciclo
+                        setTimeout(() => {
+                            iniciarCiclo(); // Loop infinito
+                        }, DURACAO_STAR2_MS);
+                        
+                    }, DURACAO_UMA_VOLTA_STAR1_MS * 5); // Você mudou para 1, mantive assim
+                }
+                
+                // Inicia o ciclo
+                iniciarCiclo();
+            }
+        });
+    </script>
