@@ -234,7 +234,7 @@
         </div>
     </div>
 
-    <script>
+   <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- CONFIGURAÇÃO ---
             const DURACAO_UMA_VOLTA_STAR1_MS = 2000; // Duração de 1 loop do star.gif
@@ -245,38 +245,54 @@
             const starImg2 = document.getElementById('starButterflyGif2');
             
             if (starImg1 && starImg2) {
-                
-                function iniciarCiclo() {
-                    
-                    // --- ESTADO 1 (Mostrar star.gif) ---
-                    starImg2.style.display = 'none'; // Esconde o 2
-                    starImg1.style.display = 'block'; // Mostra o 1
-                    
-                    // Força o GIF a reiniciar (adicionando um timestamp)
-                    starImg1.src = 'star.gif?' + Date.now();
-                    
-                    // Agenda a troca para o star2
-                    setTimeout(() => {
-                        
-                        // --- ESTADO 2 (Mostrar star2.gif) ---
-                        starImg1.style.display = 'none';  // Esconde o 1
-                        starImg2.style.display = 'block'; // Mostra o 2
 
-                        // Força o GIF a reiniciar
-                        starImg2.src = 'star2.gif?' + Date.now();
-                        
-                        // Agenda o reinício do ciclo
-                        setTimeout(() => {
-                            iniciarCiclo(); // Loop infinito
-                        }, DURACAO_STAR2_MS);
-                        
-                    }, DURACAO_UMA_VOLTA_STAR1_MS * 1); // Você estava usando * 1 no seu teste
+                function trocarParaStar2() {
+                    // --- ESTADO 2 (Pre-load e mostrar star2.gif) ---
+
+                    // 1. Configura o "ouvinte" (onload).
+                    // Isso só vai rodar QUANDO o star2.gif terminar de carregar.
+                    starImg2.onload = () => {
+                        // 3. (Depois que carregou) Faz a troca visual instantânea
+                        starImg1.style.display = 'none';
+                        starImg2.style.display = 'block';
+                        starImg2.onload = null; // Limpa o "ouvinte" para evitar bugs
+
+                        // 4. Agenda a próxima troca (para voltar ao star1)
+                        setTimeout(trocarParaStar1, DURACAO_STAR2_MS);
+                    };
+
+                    // 2. Manda o navegador carregar o GIF 2 (enquanto ele ainda está escondido)
+                    // O `onload` acima será disparado quando isso terminar.
+                    starImg2.src = 'star2.gif?' + Date.now();
+                }
+
+                function trocarParaStar1() {
+                    // --- ESTADO 1 (Pre-load e mostrar star1.gif) ---
+
+                    // 1. Configura o "ouvinte" (onload) para o star1
+                    starImg1.onload = () => {
+                        // 3. (Depois que carregou) Faz a troca visual
+                        starImg2.style.display = 'none';
+                        starImg1.style.display = 'block';
+                        starImg1.onload = null; // Limpa o "ouvinte"
+
+                        // 4. Agenda a próxima troca (para ir ao star2)
+                        setTimeout(trocarParaStar2, DURACAO_UMA_VOLTA_STAR1_MS * 1);
+                    };
+
+                    // 2. Manda o navegador carregar o GIF 1 (enquanto ele ainda está escondido)
+                    starImg1.src = 'star.gif?' + Date.now();
                 }
                 
-                // Inicia o ciclo
-                iniciarCiclo();
+                // --- INÍCIO DO CICLO ---
+                // A página começa com star.gif visível (definido no CSS).
+                // Apenas forçamos o reinício dele e agendamos a *primeira* troca.
+                
+                // Garante que o GIF 1 (que já está visível) reinicie
+                starImg1.src = 'star.gif?' + Date.now(); 
+                
+                // Agenda a primeira troca para o star2
+                setTimeout(trocarParaStar2, DURACAO_UMA_VOLTA_STAR1_MS * 1);
             }
         });
     </script>
-</body>
-</html>
