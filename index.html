@@ -153,6 +153,9 @@
             50% { box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 0 15px rgba(255,255,255,0); }
         }
         .discord-button:hover { transform: scale(1.1) rotate(-2deg); box-shadow: 0 15px 40px rgba(0,0,0,0.5); }
+        
+        /* --- CSS CORRIGIDO E ADICIONADO --- */
+        
         .star-butterfly {
             position: fixed;
             bottom: 20px;
@@ -161,18 +164,45 @@
             height: auto;
             z-index: 1000;
             filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+            /* A imagem 1 (star.gif) começa visível */
+            display: block; 
         }
+
+        /* Classe NOVA para a segunda imagem (star2.gif) */
+        .star-butterfly-2 {
+            position: fixed;
+            z-index: 1000;
+            filter: drop-shadow(0 5px 15px rgba(0,0,0,0.4));
+            
+            /* Estilos específicos do star2.gif */
+            width: 592px; 
+            bottom: 24px;
+            right: 47px;
+
+            /* A imagem 2 (star2.gif) começa escondida */
+            display: none; 
+        }
+        
         @media (max-width: 768px) {
             h1 { font-size: 2.5em; letter-spacing: 6px; padding: 15px 25px; }
             .cards-container { grid-template-columns: 1fr; }
+
+            /* Regra original, agora se aplica APENAS ao star.gif */
             .star-butterfly { width: 100px; bottom: 10px; right: 10px; }
+            
+            /* Esconde o star2.gif (que é muito grande) em telas pequenas */
+            .star-butterfly-2 {
+                display: none;
+            }
         }
+        /* --- FIM DA CORREÇÃO DO CSS --- */
     </style>
 </head>
 <body>
     <div class="stars" id="stars"></div>
     
-    <img src="star.gif" alt="Star Butterfly" class="star-butterfly" id="starButterflyGif">
+    <img src="star.gif" alt="Star Butterfly" class="star-butterfly" id="starButterflyGif1">
+    <img src="star2.gif" alt="Star Butterfly" class="star-butterfly-2" id="starButterflyGif2">
     
     <div class="container">
         <header>
@@ -204,52 +234,43 @@
         </div>
     </div>
 
-  <script>
+    <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- CONFIGURAÇÃO ---
-            // !IMPORTANTE: Ajuste estes valores conforme a duração real dos seus GIFs
-            const DURACAO_UMA_VOLTA_STAR1_MS = 2000; // Duração de 1 loop do star.gif (ex: 2000ms = 2s)
-            const DURACAO_STAR2_MS = 2000; // Duração total do star2.gif (ex: 2000ms = 2s)
-            const TAMANHO_STAR2_PX = 592; // Tamanho (largura) do star2.gif em pixels
-            const POSICAO_STAR2_BOTTOM = 24; // Distância do fundo da tela em pixels
-            const POSICAO_STAR2_RIGHT = 47; // Distância da direita da tela em pixels
+            const DURACAO_UMA_VOLTA_STAR1_MS = 2000; // Duração de 1 loop do star.gif
+            const DURACAO_STAR2_MS = 2000;           // Duração total do star2.gif
             // --- FIM DA CONFIGURAÇÃO ---
 
-            const starImg = document.getElementById('starButterflyGif');
+            const starImg1 = document.getElementById('starButterflyGif1');
+            const starImg2 = document.getElementById('starButterflyGif2');
             
-            if (starImg) {
+            if (starImg1 && starImg2) {
+                
                 function iniciarCiclo() {
                     
-                    // --- ESTADO 1 (star.gif) ---
-                    // Remove os estilos inline para que o CSS da classe .star-butterfly
-                    // (e a media query) volte a funcionar.
-                    starImg.style.width = ''; 
-                    starImg.style.bottom = ''; 
-                    starImg.style.right = '';
+                    // --- ESTADO 1 (Mostrar star.gif) ---
+                    starImg2.style.display = 'none'; // Esconde o 2
+                    starImg1.style.display = 'block'; // Mostra o 1
                     
-                    // AGORA define o src. O navegador vai carregar o GIF
-                    // no elemento que já está com o tamanho correto do CSS.
-                    starImg.src = 'star.gif?' + Date.now();
+                    // Força o GIF a reiniciar (adicionando um timestamp)
+                    starImg1.src = 'star.gif?' + Date.now();
                     
-                    // Após 10 voltas (ou 1, como no seu teste) do star.gif, troca para star2.gif
+                    // Agenda a troca para o star2
                     setTimeout(() => {
                         
-                        // --- ESTADO 2 (star2.gif) ---
-                        // Define os estilos inline do star2 PRIMEIRO.
-                        starImg.style.width = TAMANHO_STAR2_PX + 'px'; // Aplica tamanho do star2.gif
-                        starImg.style.bottom = POSICAO_STAR2_BOTTOM + 'px'; // Aplica posição do star2.gif
-                        starImg.style.right = POSICAO_STAR2_RIGHT + 'px';
+                        // --- ESTADO 2 (Mostrar star2.gif) ---
+                        starImg1.style.display = 'none';  // Esconde o 1
+                        starImg2.style.display = 'block'; // Mostra o 2
 
-                        // AGORA define o src. O navegador vai carregar o GIF
-                        // no elemento que já está com o tamanho de 592px.
-                        starImg.src = 'star2.gif?' + Date.now();
+                        // Força o GIF a reiniciar
+                        starImg2.src = 'star2.gif?' + Date.now();
                         
-                        // Após star2.gif rodar 1x, reinicia o ciclo
+                        // Agenda o reinício do ciclo
                         setTimeout(() => {
                             iniciarCiclo(); // Loop infinito
                         }, DURACAO_STAR2_MS);
                         
-                    }, DURACAO_UMA_VOLTA_STAR1_MS * 5); // Você mudou para 1, mantive assim
+                    }, DURACAO_UMA_VOLTA_STAR1_MS * 1); // Você estava usando * 1 no seu teste
                 }
                 
                 // Inicia o ciclo
@@ -257,3 +278,5 @@
             }
         });
     </script>
+</body>
+</html>
